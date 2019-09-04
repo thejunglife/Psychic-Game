@@ -19,8 +19,14 @@ let guessesLeftNow = 9;
 let guesses = [];
 
 
-// allows the computer to randomly pick a letter
-
+let guessesSoFar = function() {
+  document.getElementById('guesses').innerHTML = 'Your Guesses So Far: ' + guesses.join(',');
+};
+//  resets game to starting point w/o refreshing page
+function reset () {
+  guessesLeftNow = 9;
+  guesses = [];
+};
 
 
 
@@ -29,12 +35,21 @@ let guesses = [];
 document.onkeyup = function(start) {
 
   let userGuess = event.key;
+  // doesn't allow user to use same key.
+  if (guesses.includes(userGuess)) {
+    return alert('You already chose this letter!')
+    
+  };
+
   let computerChoice = computerGuesses[Math.floor(Math.random() * computerGuesses.length)];
+  guesses.push(userGuess);
+  guessesSoFar();
 
  if (userGuess === computerChoice) {
    document.getElementById('wins').innerHTML = 'Wins: ' + wins;
    wins ++;
    guessesLeftNow = 8;
+   guesses = [];
  } 
 
  else {
@@ -42,15 +57,16 @@ document.onkeyup = function(start) {
    guessesLeftNow--;
  }
 
- if (guessesLeftNow === 0) {
-   document.getElementById('losses').innerHTML = 'losses: ' + losses 
-   losses ++;
+ if (guessesLeftNow === -1) {
+   document.getElementById('losses').innerHTML = 'Losses: ' + losses 
    guessesLeftNow = 8;
- }
+   losses++;
+   guesses = [];
+ };
 
 
+ };
 
- }
 
 
 
